@@ -22,6 +22,7 @@ import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.c
 import { PreloadComponent } from './preload/preload.component';
 import { NavSyncComponent } from './nav-sync/nav-sync.component';
 import { ViewGroupComponent } from './project/view-group/view-group.component';
+// import { LuigiAutoRoutingService } from '@luigi-project/client-support-angular';
 
 const routes: Routes = [
   { path: 'preload', component: PreloadComponent },
@@ -52,6 +53,10 @@ const routes: Routes = [
     component: DynamicComponent
   },
   { path: 'projects/:projectId/developers', component: DevelopersComponent },
+  // {
+  //   path: 'projects/:projectId/developers/:extend', component: SettingsComponent,
+  //   // data: { fromVirtualTreeRoot: { truncate: '*/developers' } }
+  // },
   { path: 'projects/:projectId/drawer', component: DrawerComponent },
   { path: 'projects/:projectId/settings', component: SettingsComponent },
   {

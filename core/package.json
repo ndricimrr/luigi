@@ -135,5 +135,8 @@
   "repository": {
     "type": "git",
     "url": "ssh://github.com/SAP/luigi.git"
+  },
+  "dependencies": {
+    "@luigi-project/client-support-angular": "^1.12.0"
   }
 }

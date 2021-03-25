@@ -4,7 +4,8 @@ import { Navigation } from '../navigation/services/navigation';
 import {
   GenericHelpers,
   RoutingHelpers,
-  IframeHelpers, EventListenerHelpers
+  IframeHelpers,
+  EventListenerHelpers
 } from '../utilities/helpers';
 import { LuigiConfig, LuigiI18N, LuigiNavigation } from '../core-api';
 import { Iframe } from './';
@@ -16,10 +17,10 @@ class RoutingClass {
   getNodePath(node, params) {
     return node
       ? RoutingHelpers.buildRoute(
-        node,
-        node.pathSegment ? '/' + node.pathSegment : '',
-        params
-      )
+          node,
+          node.pathSegment ? '/' + node.pathSegment : '',
+          params
+        )
       : '';
   }
 
@@ -159,9 +160,9 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-        ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
         window.location.search
-        : GenericHelpers.trimLeadingSlash(window.location.pathname);
+      : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   async handleRouteChange(path, component, iframeElement, config, withoutSync) {
@@ -190,7 +191,7 @@ class RoutingClass {
               this.handleRouteChange(path, component, iframeElement, config) &&
               history.replaceState(window.state, '', newUrl);
           },
-          () => { }
+          () => {}
         );
         return;
       }
@@ -238,8 +239,8 @@ class RoutingClass {
             this.showPageNotFoundError(
               component,
               GenericHelpers.trimTrailingSlash(pathData.matchedPath) +
-              '/' +
-              defaultChildNode,
+                '/' +
+                defaultChildNode,
               pathUrlRaw,
               true
             );
@@ -330,10 +331,10 @@ class RoutingClass {
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
             ? {
-              viewUrl: previousCompData.viewUrl,
-              isolateView: previousCompData.isolateView,
-              viewGroup: previousCompData.viewGroup
-            }
+                viewUrl: previousCompData.viewUrl,
+                isolateView: previousCompData.isolateView,
+                viewGroup: previousCompData.viewGroup
+              }
             : {}
         })
       );
@@ -393,6 +394,26 @@ class RoutingClass {
         }
         if (!withoutSync) {
           await Iframe.navigateIframe(config, component, iframeElement);
+        } else {
+          const componentData = component.get();
+          let viewUrl = componentData.viewUrl;
+
+          const internalData = await component.prepareInternalData(config);
+          const message = {
+            msg: 'luigi.navigate',
+            viewUrl: viewUrl,
+            context: JSON.stringify(
+              Object.assign({}, componentData.context, componentData.context)
+            ),
+            nodeParams: JSON.stringify(
+              Object.assign({}, componentData.nodeParams)
+            ),
+            pathParams: JSON.stringify(
+              Object.assign({}, componentData.pathParams)
+            ),
+            internal: JSON.stringify(internalData)
+          };
+          IframeHelpers.sendMessageToIframe(config.iframe, message);
         }
       }
     } catch (err) {
@@ -442,10 +463,10 @@ class RoutingClass {
             if (
               !isSamePath ||
               newPathSegment !==
-              RoutingHelpers.getDynamicNodeValue(
-                previousPathNode,
-                previousCompData.pathParams
-              )
+                RoutingHelpers.getDynamicNodeValue(
+                  previousPathNode,
+                  previousCompData.pathParams
+                )
             ) {
               NodeDataManagementStorage.deleteNodesRecursively(
                 previousPathNode
@@ -614,8 +635,9 @@ class RoutingClass {
         if (queryParamIndex !== -1) {
           url.hash = url.hash.slice(0, queryParamIndex);
         }
-        url.hash = `${url.hash
-          }${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
+        url.hash = `${
+          url.hash
+        }${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
       } else {
         url.search = `?${RoutingHelpers.encodeParams(params)}`;
       }
@@ -634,10 +656,11 @@ class RoutingClass {
       let modalParamsObj = {};
 
       if (params[modalParamName]) {
-        modalParamsObj[modalParamName] = params[modalParamName]
+        modalParamsObj[modalParamName] = params[modalParamName];
       }
       if (params[`${modalParamName}Params`]) {
-        modalParamsObj[`${modalParamName}Params`] = params[`${modalParamName}Params`];
+        modalParamsObj[`${modalParamName}Params`] =
+          params[`${modalParamName}Params`];
       }
       let prevModalPath = RoutingHelpers.encodeParams(modalParamsObj);
       if (url.hash.includes(`?${prevModalPath}`)) {
@@ -650,7 +673,13 @@ class RoutingClass {
       searchParams.delete(modalParamName);
       searchParams.delete(`${modalParamName}Params`);
       let finalUrl = '';
-      Array.from(searchParams.keys()).forEach(searchParamKey => { finalUrl += (finalUrl === '' ? '?' : '&') + searchParamKey + '=' + searchParams.get(searchParamKey); });
+      Array.from(searchParams.keys()).forEach(searchParamKey => {
+        finalUrl +=
+          (finalUrl === '' ? '?' : '&') +
+          searchParamKey +
+          '=' +
+          searchParams.get(searchParamKey);
+      });
       url.search = finalUrl;
     }
     history.replaceState(window.state, '', url.href);

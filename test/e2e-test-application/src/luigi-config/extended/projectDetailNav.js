@@ -60,13 +60,18 @@ export const projectDetailNavStructure = projectId => [
   {
     category: 'User Management',
     pathSegment: 'developers',
-    label: 'Developers',
+    label: 'Developers3',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
     icon: 'employee',
     badgeCounter: {
       label: 'Number of developers',
       count: () => Math.floor(Math.random() * 100)
-    }
+    },
+    context: {
+      label: 'VirtualTree - add segments to the url',
+      links: false
+    },
+    virtualTree: true
   },
   {
     pathSegment: 'clientPermissionsTets',
@@ -388,7 +393,7 @@ export const projectDetailNavStructure = projectId => [
       {
         category: 'User Management',
         pathSegment: 'developers',
-        label: 'Developers',
+        label: 'Developers1',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
         icon: 'employee',
         badgeCounter: {
@@ -441,7 +446,7 @@ export const projectDetailNavStructure = projectId => [
       {
         category: 'User Management',
         pathSegment: 'developers',
-        label: 'Developers',
+        label: 'Developers2',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
         icon: 'employee',
         badgeCounter: {

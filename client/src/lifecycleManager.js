@@ -50,12 +50,12 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * const init = LuigiClient.isLuigiClientInitialized()
    */
-  isLuigiClientInitialized(){
+  isLuigiClientInitialized() {
     return this.luigiInitialized;
   }
 
   /**
-   * Starts the handshake with Luigi Core and thereafter resulting in initialization of Luigi Client. It is always ran by default when importing luigi-client package in your micro frontend. Note that when using 'defer-luigi-init' to defer default initialization you will need to initialize the handshake using this function manually wherever needed. 
+   * Starts the handshake with Luigi Core and thereafter resulting in initialization of Luigi Client. It is always ran by default when importing luigi-client package in your micro frontend. Note that when using 'defer-luigi-init' to defer default initialization you will need to initialize the handshake using this function manually wherever needed.
    * @since NEXTRELEASE
    * @memberof Lifecycle
    * @example
@@ -63,7 +63,7 @@ class LifecycleManager extends LuigiClientBase {
    */
   luigiClientInit() {
     if (this.luigiInitialized) {
-      console.warn("Luigi Client has been already initialized")
+      console.warn('Luigi Client has been already initialized');
       return;
     }
     /**
@@ -120,6 +120,7 @@ class LifecycleManager extends LuigiClientBase {
           new PopStateEvent('popstate', { state: 'luiginavigation' })
         );
       }
+      console.log('FRONT', e.data);
       // execute the context change listener if set by the micro frontend
       this._notifyUpdate();
       helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
@@ -137,8 +138,7 @@ class LifecycleManager extends LuigiClientBase {
       '*'
     );
     this._tpcCheck();
-  };
-
+  }
 
   _tpcCheck() {
     let tpc = 'enabled';
